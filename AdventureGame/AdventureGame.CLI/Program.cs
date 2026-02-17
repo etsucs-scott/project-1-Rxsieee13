@@ -1,4 +1,4 @@
-﻿using AdventureGame.Core;
+using AdventureGame.Core;
 
 static void Main(string[] args)
 {
@@ -21,6 +21,22 @@ static void Main(string[] args)
 
     Console.WriteLine("Game Over! Press any key to exit.");
     Console.ReadKey();
+
+    while (!gameOver)
+    {
+        Console.Clear();
+
+        for (int y = 0; y < maze.Height; y++)
+        {
+            for (int x = 0; x < maze.Width; x++)
+        }
+
+        Console.WriteLine($"HP: {catplayer.Health} | Last Action: {messageFromCore}");
+
+        ConsoleKeyInfo input = Console.ReadKey(true);
+
+        messageFromCore = engine.ProcessInput(input.Key);
+    }
 }
 
 static void RenderMaze(object maze, object player)
@@ -32,3 +48,4 @@ static object GetHealth(GameEngine engine)
 { 
     return engine.Player(GetHealth); 
 }
+
