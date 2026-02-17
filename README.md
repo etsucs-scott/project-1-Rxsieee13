@@ -41,3 +41,6 @@ dotnet run --project ProjectName.App
 - Commit early and commit often.
 - Your repository history is part of your submission.
 - Update this README with build/run instructions specific to your project.
+
+- UML Diagram: https://etsu365-my.sharepoint.com/:i:/g/personal/gutierrezver_etsu_edu/IQAZYljUD9TcRLuHUc2uv16KAXZ-ZcnL1zY_HHM9FF-PYbw?e=vFiWQN
+- 
