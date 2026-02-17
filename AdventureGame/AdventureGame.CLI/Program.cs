@@ -1,6 +1,6 @@
 using AdventureGame.Core;
 
-static void Main(string[] args)
+static void Main(string[] args, bool gameOver, Maze maze, CatPlayer catplayer, object messageFromCore)
 {
     GameEngine engine = new GameEngine();
     engine.InitializeMazeBuild(10, 10);
@@ -28,7 +28,7 @@ static void Main(string[] args)
 
         for (int y = 0; y < maze.Height; y++)
         {
-            for (int x = 0; x < maze.Width; x++)
+            for (int x = 0; x < maze.Width; x++) ;
         }
 
         Console.WriteLine($"HP: {catplayer.Health} | Last Action: {messageFromCore}");
