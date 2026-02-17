@@ -43,4 +43,7 @@ dotnet run --project ProjectName.App
 - Update this README with build/run instructions specific to your project.
 
 - UML Diagram: https://etsu365-my.sharepoint.com/:i:/g/personal/gutierrezver_etsu_edu/IQAZYljUD9TcRLuHUc2uv16KAXZ-ZcnL1zY_HHM9FF-PYbw?e=vFiWQN
-- 
+- This game is an escape the dog maze, where you are a cat looking for a way out while fitting your way out against dogs.
+- To build and run this code, you will put in
+- (dotnet build dotnet run --project src/AdventureGame.Console_)
+- You will win once you find the exit and make it with health left. The only way you lose is if you lose all your health against the dogs.
