@@ -221,15 +221,15 @@ namespace AdventureGame.Core
             }
 
             Random rng = new Random();
-            int wallX = 0, wallY = 0;
-            _grid[wallX, wallY].IsWall = false;
+            int currX = 0, currY = 0;
+            _grid[currX, currY].IsWall = false;
 
-            while (wallX < width - 1 || wallY < height - 1)
+            while (currX < width - 1 || currY < height - 1)
             {
-                if (rng.Next(0, 2) == 0 && wallX < width - 1) wallX++;
-                else if (wallY < height - 1) wallY++;
+                if (rng.Next(0, 2) == 0 && currX < width - 1) currX++;
+                else if (currY < height - 1) currY++;
 
-                _grid[wallX, wallY].IsWall = false;
+                _grid[currX, currY].IsWall = false;
             }
             _grid[width - 1, height - 1].IsExit = true;
 
@@ -247,7 +247,7 @@ namespace AdventureGame.Core
 
                     if (!_grid[x, y].IsWall && rng.Next(0, 100) < 10)
                     {
-                        _grid[x, y].Monster = new Monster();
+                        _grid[x, y].MonsterDog = new Monster();
                     }
                     else if (!_grid[x, y].IsWall && rng.Next(0, 100) < 5)
                     {
