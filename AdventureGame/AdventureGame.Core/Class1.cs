@@ -1,194 +1,216 @@
 namespace AdventureGame.Core
 {
-  public interface ICatCharacter
-{
-    int Health { get; set; }
-    int BaseDamage { get; set; }
-    void Attack(ICatCharacter target);
-    void TakeDamage(int amount);
-}
-public abstract class items
-{
-    public string Name { get; set; }
-    public string PickupMessage { get; set; }
-
-    protected items(string name, string pickupMessage)
+    public interface ICatCharacter
     {
-        Name = name;
-        PickupMessage = pickupMessage;
+        int Health { get; set; }
+        int BaseDamage { get; set; }
+        void Attack(ICatCharacter target);
+        void TakeDamage(int amount);
     }
-}
-public class Weapon : items
-{
-    public int AttackModifier { get; set; }
-    public Weapon(String name, string message, int modifier) : base(name, message) => AttackModifier = modifier;
-}
-public class MilkPotion : items
-{
-    public int HealAmount { get; } = 20;
-    public int DamageAmount { get; set; }
-    public MilkPotion(string name, string message) : base(name, message) { }
-}
-public class CatPlayer : ICatCharacter
-{
-    public int Health { get; set; } = 100;
-    public int MaxHealth { get; } = 150;
-    public int BaseDamage { get; } = 10;
-    public List<items> Inventory { get; private set; } = new List<items>();
-    int ICatCharacter.BaseDamage { get => BaseDamage; set => throw new NotImplementedException(); }
-    public static int X { get; internal set; }
-    public static int Y { get; internal set; }
-
-    public void Attack(ICatCharacter target)
+    public abstract class items
     {
-        int bestModifier = Inventory.OfType<Weapon>()
-            .Select(w => w.AttackModifier)
-            .DefaultIfEmpty(0)
-            .Max();
+        public string Name { get; set; }
+        public string PickupMessage { get; set; }
 
-        target.TakeDamage(BaseDamage + bestModifier);
-    }
-    public void TakeDamage(int amount)
-    {
-        Health -= amount;
-        if (Health < 0)
+        protected items(string name, string pickupMessage)
         {
-            Health = 0;
+            Name = name;
+            PickupMessage = pickupMessage;
         }
     }
-    public void DrinkMilkPotion(MilkPotion milkpotion)
+    public class Weapon : items
     {
-        Health = Math.Min(MaxHealth, Health + milkpotion.HealAmount);
-        Inventory.Remove(milkpotion);
+        public int AttackModifier { get; set; }
+        public Weapon(String name, string message, int modifier) : base(name, message) => AttackModifier = modifier;
     }
-}
-
-public class MonsterDog : ICatCharacter
-{
-    private static Random _rng = Random();
-
-    private static Random Random()
+    public class MilkPotion : items
     {
-        throw new NotImplementedException();
+        public int HealAmount { get; } = 20;
+        public int DamageAmount { get; set; }
+        public MilkPotion(string name, string message) : base(name, message) { }
     }
-
-    public int Health { get; set; }
-    public int BaseDamage { get; } = 10;
-    int ICatCharacter.BaseDamage { get => BaseDamage; set => throw new NotImplementedException(); }
-
-    public MonsterDog()
+    public class CatPlayer : ICatCharacter
     {
-        Health = _rng.Next(30, 50);
-    }
-    public void Attack(ICatCharacter target)
-    {
-        target.TakeDamage(BaseDamage);
-    }
-    public void TakeDamage(int amount)
-    {
-        Health -= amount;
-    }
+        public int Health { get; set; } = 100;
+        public int MaxHealth { get; } = 150;
+        public int BaseDamage { get; } = 10;
+        public List<items> Inventory { get; private set; } = new List<items>();
+        int ICatCharacter.BaseDamage { get => BaseDamage; set => throw new NotImplementedException(); }
+        public static int X { get; internal set; }
+        public static int Y { get; internal set; }
 
-}
-
-public class Tile
-{
-    public bool IsWall { get; set; }
-    public bool IsExit { get; set; }
-    public MonsterDog? IsMonsterDog { get; set; }
-    public items? Isitems { get; set; }
-    public bool IsWalkable => !IsWall;
-
-    public items Isitem { get; internal set; }
-}
-
-public class Maze
-{
-    private Tile[,] _grid;
-    public int Width { get; }
-    public int Height { get; }
-
-    public Maze(int width, int height)
-    {
-        Width = width;
-        Height = height;
-        _grid = new Tile[width, height];
-
-        for (int x = 0; x < width; x++)
+        public void Attack(ICatCharacter target)
         {
-            for (int y = 0; y < height; y++)
+            int bestModifier = Inventory.OfType<Weapon>()
+                .Select(w => w.AttackModifier)
+                .DefaultIfEmpty(0)
+                .Max();
+
+            target.TakeDamage(BaseDamage + bestModifier);
+        }
+        public void TakeDamage(int amount)
+        {
+            Health -= amount;
+            if (Health < 0)
             {
-                _grid[x, y] = new Tile();
+                Health = 0;
             }
         }
-    }
-
-    public Tile GetTile(int x, int y)
-    {
-        if (x < 0 || x >= Width || y < 0 || y >= Height)
-            return null;
-        return _grid[x, y];
-    }
-    public void Exit(int x, int y)
-    {
-        _grid[x, y].IsExit = true;
-    }
-
-}
-
-public class GameEngine()
-{
-    public object Core { get; private set; }
-
-    public bool GetItems(bool items) => items;
-
-    public string MoveCat(int deltaX, int deltaY, CatPlayer catplayer, items item, Tile targetTile, items Isitem, CatPlayer catPlayer)
-    {
-        int newX = CatPlayer.X + deltaX;
-        int newY = CatPlayer.Y + deltaY;
-
-        Tile tile = GetTile(newX, newY);
-        if (targetTile == null || targetTile.IsWall)
+        public void DrinkMilkPotion(MilkPotion milkpotion)
         {
-            return $"You cannot move there!";
+            Health = Math.Min(MaxHealth, Health + milkpotion.HealAmount);
+            Inventory.Remove(milkpotion);
+        }
+    }
+
+    public class MonsterDog : ICatCharacter
+    {
+        private static Random _rng = Random();
+
+        private static Random Random()
+        {
+            throw new NotImplementedException();
         }
 
-        CatPlayer.X = newX;
-        CatPlayer.Y = newY;
+        public int Health { get; set; }
+        public int BaseDamage { get; } = 10;
+        int ICatCharacter.BaseDamage { get => BaseDamage; set => throw new NotImplementedException(); }
 
-        if (targetTile.IsExit) return $"Win!";
-
-        if (targetTile.Isitems != null)
+        public MonsterDog()
         {
-            catplayer.Inventory.Add(targetTile.Isitem);
-            targetTile.Isitems = null;
-
-            if (targetTile.Isitems is MilkPotion p) catplayer.Health += p.HealAmount;
-            return $"Picked up {item.Name}! {item.PickupMessage}";
-
+            Health = _rng.Next(30, 50);
+        }
+        public void Attack(ICatCharacter target)
+        {
+            target.TakeDamage(BaseDamage);
+        }
+        public void TakeDamage(int amount)
+        {
+            Health -= amount;
         }
 
-        if (targetTile.IsMonsterDog != null)
+    }
+
+    public class Tile
+    {
+        public bool IsWall { get; set; }
+        public bool IsExit { get; set; }
+        public MonsterDog? IsMonsterDog { get; set; }
+        public items? Isitems { get; set; }
+        public bool IsWalkable => !IsWall;
+
+        public items Isitem { get; internal set; }
+    }
+
+    public class Maze
+    {
+        private Tile[,] _grid;
+        public int Width { get; }
+        public int Height { get; }
+
+        public Maze(int width, int height)
         {
-            return StartBattle(targetTile.IsMonsterDog, targetTile);
+            Width = width;
+            Height = height;
+            _grid = new Tile[width, height];
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    _grid[x, y] = new Tile();
+                }
+            }
         }
 
-        return "Moved safely! :)";
+        public Tile GetTile(int x, int y)
+        {
+            if (x < 0 || x >= Width || y < 0 || y >= Height)
+                return null;
+            return _grid[x, y];
+        }
+        public void Exit(int x, int y)
+        {
+            _grid[x, y].IsExit = true;
+        }
+
     }
 
-    private string StartBattle(MonsterDog isMonsterDog, Tile targetTile)
+    public class GameEngine()
     {
-        throw new NotImplementedException();
-    }
+        public object Maze;
 
-    private string StartBattle(bool isMonsterDog, Tile targetTile)
-    {
-        throw new NotImplementedException();
-    }
+        public object Core { get; private set; }
+        public bool IsRunning { get; set; }
+        public object CatPlayer { get; set; }
+        public int catplayerX { get; private set; }
+        public int catplayerY { get; private set; }
 
-    private Tile GetTile(int newX, int newY)
-    {
-        throw new NotImplementedException();
+        public bool GetItems(bool items) => items;
+
+        public string MoveCat(int deltaX, int deltaY, CatPlayer catplayer, items item, Tile targetTile, items Isitem, CatPlayer catPlayer)
+        {
+            int newX = catplayerX + deltaX;
+            int newY = catplayerY + deltaY;
+
+            Tile tile = GetTile(newX, newY);
+            if (targetTile == null || targetTile.IsWall)
+            {
+                return $"You cannot move there!";
+            }
+
+            catplayerX = newX;
+            catplayerY = newY;
+
+            if (targetTile.IsExit) return $"Win!";
+
+            if (targetTile.Isitems != null)
+            {
+                catplayer.Inventory.Add(targetTile.Isitem);
+                targetTile.Isitems = null;
+
+                if (targetTile.Isitems is MilkPotion p) catplayer.Health += p.HealAmount;
+                return $"Picked up {item.Name}! {item.PickupMessage}";
+
+            }
+
+            if (targetTile.IsMonsterDog != null)
+            {
+                return StartBattle(targetTile.IsMonsterDog, targetTile);
+            }
+
+            return "Moved safely! :)";
+        }
+
+        private string StartBattle(MonsterDog isMonsterDog, Tile targetTile)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string StartBattle(bool isMonsterDog, Tile targetTile)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Tile GetTile(int newX, int newY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InitializeMazeBuild(int v1, int v2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ProcessInput(ConsoleKey key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object catplayer(Func<GameEngine, object> getHealth)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-}
+
