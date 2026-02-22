@@ -51,3 +51,6 @@ dotnet run --project ProjectName.App
 - UML Diagram: https://etsu365-my.sharepoint.com/:i:/g/personal/gutierrezver_etsu_edu/IQAZYljUD9TcRLuHUc2uv16KAXZ-ZcnL1zY_HHM9FF-PYbw?e=vFiWQN
 - This game is an escape the dog maze, where you are a cat looking for a way out while fighting your way out against dogs.
 - You will win once you find the exit and make it with health left. The only way you lose is if you lose all your health against the dog battles. You will use the keys WASD or the arrow keys to move your cat character around.
+- To build and run this code, you will put in
+- dotnet build dotnet run --project-1-Rxsieee13 src/AdventureGame.Console_
+- You will win once you find the exit and make it with health left. The only way you lose is if you lose all your health against the dog battles.
